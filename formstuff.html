@@ -1,0 +1,77 @@
+
+<!-- saved from url=(0069)file:///C:/Users/jjudd/Documents/My%20Received%20Files/formstuff.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<script src="./formstuff_files/jquery.min.js.download"></script>
+</head>
+<body>
+	<form id="my-form">
+		<label>Name:</label>
+		<input type="text" id="name" name="name">
+		<label>Phone:</label>
+		<input type="text" id="phone" name="phone">
+		<label>Address:</label>
+		<input type="text" id="address" name="address">
+		<label>Address2:</label>
+		<input type="text" id="address2" name="address2">
+		
+		<input type="button" id="submit" value="Submit">
+	</form>
+	<div id="content"><table id="my-table"><tbody><tr><th>name</th><th>phone</th><th>address</th><th>address2</th></tr><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td></td><td></td><td></td><td></td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody><tbody><tr><td>q</td><td>q</td><td>q</td><td>q</td></tr></tbody></table></div>
+
+<script>
+	
+	$("#submit").on("click", function(e){
+		e.preventDefault();
+		
+		WriteTable("content", "my-table", "my-form");
+	});
+	
+	// there is some jquery in this so having that available is required
+	// each form element must have an id and name property for this to work correctly
+	function WriteTable(containerId, tableId, formId){
+		var mappedElements = BuildFormElements(SerializeArray(formId));
+		var container = document.getElementById(containerId);
+		if(container.innerHTML == ""){
+			var html = BuildTableHeader(mappedElements, tableId);
+			html += AddTableRow(mappedElements);
+			container.innerHTML = html;
+		}else{
+			var table = document.getElementById(tableId);
+			table.innerHTML += AddTableRow(mappedElements);
+		}	
+	}
+	
+	function BuildTableHeader(mappedElements, identifier){
+		var headers = new Array;
+		mappedElements.forEach(element => headers.push(element.label));
+		
+		var tableText = "<table id='" + identifier + "'><tr>";
+		headers.forEach(header => tableText += "<th>" + header + "</th>");
+		tableText += "</tr>";
+
+		return tableText; 		
+	}
+	
+	function AddTableRow(mappedElements){
+		var tableText = "<tr>";
+		mappedElements.forEach(element => tableText += "<td>" + element.value + "</td>");
+		
+		return tableText;
+	}
+	
+	function BuildFormElements(elements){
+		var mappedElements = new Array;
+		elements.forEach(element => mappedElements.push(new FormElement(element.name, element.value)));
+		
+		return mappedElements;
+	}
+	
+	function FormElement(label, value){
+		this.label = label;
+		this.value = value;
+	}
+	
+	function SerializeArray(formId){
+		return JSON.parse(JSON.stringify($("#" + formId).serializeArray()));
+	}
+</script></body></html>
